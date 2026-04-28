@@ -2,7 +2,7 @@
 
 Hyperspectral image (HSI) datasets used in the paper **"Sw-SSFCM: Spatial-weighted Softmax-Embedded Semi-Supervised Fuzzy C-Means"** (Nguyen Xuan Hoang, Mai Dinh Sinh, Nguyen Long Giang — ISI 2026).
 
-This page documents the exact datasets, semi-supervised splits, and evaluation protocol used to produce the HSI results reported in the paper (Table~IV — `tab:hsi_benchmark`, Table~III — `tab:hsi_datasets`, and the per-algorithm $\tau$-sweep figures `fig:tau_botswana` … `fig:tau_longkou`). It is intended as a single reference point for reviewers and for reproducibility.
+This page documents the exact datasets, semi-supervised splits, and evaluation protocol used to produce the HSI results reported in the paper. It is intended as a single reference point for reviewers and for reproducibility.
 
 ---
 
