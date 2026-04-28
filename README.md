@@ -187,5 +187,3 @@ These datasets are distributed by their original providers (GIC/UPV-EHU; Purdue 
 - **Pavia University, Pavia Centre, Salinas, KSC, Botswana:** GIC, *Hyperspectral Remote Sensing Scenes*, University of the Basque Country (UPV/EHU). <https://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes>
 - **Houston 2013:** C. Debes et al., "Hyperspectral and LiDAR data fusion: Outcome of the 2013 GRSS Data Fusion Contest," *IEEE J. Sel. Topics Appl. Earth Observ. Remote Sens.*, 7(6):2405–2418, 2014. <https://doi.org/10.1109/JSTARS.2014.2305441>
 - **WHU-Hi-LongKou:** Y. Zhong et al., "WHU-Hi: UAV-borne hyperspectral with high spatial resolution (H²) benchmark datasets and classifier for precise crop identification based on deep convolutional neural network with CRF," *Remote Sensing of Environment*, 250:112012, 2020. <https://doi.org/10.1016/j.rse.2020.112012>
-
-If this packaging is useful for your own work, please additionally cite the Sw-SSFCM paper (Nguyen Xuan Hoang, Mai Dinh Sinh, Nguyen Long Giang, ISI 2026).
