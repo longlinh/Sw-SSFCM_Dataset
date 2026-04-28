@@ -2,8 +2,6 @@
 
 Hyperspectral image (HSI) datasets used in the paper **"Sw-SSFCM: Spatial-weighted Softmax-Embedded Semi-Supervised Fuzzy C-Means"** (Nguyen Xuan Hoang, Mai Dinh Sinh, Nguyen Long Giang — ISI 2026).
 
-This page documents the exact datasets, semi-supervised splits, and evaluation protocol used to produce the HSI results reported in the paper. It is intended as a single reference point for reviewers and for reproducibility.
-
 ---
 
 ## 1. Datasets Overview (8 benchmarks)
@@ -46,63 +44,9 @@ Variable names inside each `.mat` follow the upstream convention (e.g. `salinas_
 
 ---
 
-## 3. Semi-Supervised Evaluation Protocol (paper)
+## 3. Per-Dataset Details
 
-All eight datasets are evaluated under a unified protocol.
-
-- **Label selection:** 60 labels per class via stratified sampling (`seed = 42`).
-- **Cap for small classes:** for classes with fewer than 60 ground-truth samples (e.g. *Oats* in Indian Pines, $n=20$), the effective label count equals the class size. This is why Indian Pines has 833 effective labels instead of $16 \times 60 = 960$.
-- **Unlabeled set:** remaining ground-truth pixels.
-- **Background:** pixels with ground-truth label $= 0$ are excluded from accuracy computation but rendered in classification maps.
-
-### Effective labeled ratios
-
-| # | Dataset              | Labels | Labeled pixels | Ratio   |
-|---|----------------------|-------:|---------------:|--------:|
-| 1 | Botswana             |    840 |          3,248 | 25.86 % |
-| 2 | Salinas              |    960 |         54,129 |  1.77 % |
-| 3 | KSC                  |    780 |          5,211 | 14.97 % |
-| 4 | Indian Pines         |    833 |         10,249 |  8.13 % |
-| 5 | Pavia University     |    540 |         42,776 |  1.26 % |
-| 6 | Pavia Centre         |    540 |        148,152 |  0.36 % |
-| 7 | Houston 2013         |    900 |         15,029 |  5.99 % |
-| 8 | WHU-Hi-LongKou       |    540 |        204,542 |  0.26 % |
-
-### Fixed algorithm parameters
-
-| Symbol         | Value     | Meaning                                                  |
-|----------------|-----------|----------------------------------------------------------|
-| `seed`         | 42        | Reproducibility seed (splits, init)                      |
-| $T_{\max}$     | 10,000    | Max FCM iterations                                       |
-| $m$            | 2.0       | Fuzzifier                                                |
-| $\varepsilon$  | 1e-4      | Convergence threshold (Exp3)                             |
-| $\gamma$       | 0.01      | Softmax learning rate                                    |
-| $\lambda$      | 1e-4      | L2 regularization (Softmax)                              |
-| $T_s$          | 1000      | Softmax max epochs                                       |
-| $r$            | 1, 2      | Spatial radius for Sw-SSFCM ($3\times3$ / $5\times5$)    |
-| $\tau$         | tuned     | Softmax influence ratio, grid $\{0.1, 0.2, \ldots, 0.9, 0.95\}$ |
-| timeout        | 600 s     | Per-baseline wall-clock cap (`signal.alarm`, in-process) |
-
-### Per-algorithm optimal $(\tau^\ast, \alpha^\ast)$ reported in the paper
-
-Values reproduced from `paper_final/pictures/fig-tau-hsi.tex`. ACC reported on labeled pixels (background excluded).
-
-| Dataset          | SeFCM $\tau^\ast$ / $\alpha^\ast$ / ACC | Sw-SSFCM $r{=}1$ $\tau^\ast$ / $\alpha^\ast$ / ACC | Sw-SSFCM $r{=}2$ $\tau^\ast$ / $\alpha^\ast$ / ACC |
-|------------------|------------------------------------------|----------------------------------------------------|----------------------------------------------------|
-| Botswana         | 0.80 /  219.8 / 94.67 %                 | 0.95 / 1043.9 / 96.27 %                            | 0.95 / 1043.9 / 96.40 %                            |
-| Salinas          | 0.60 /  110.4 / 87.68 %                 | 0.95 / 1398.0 / 89.27 %                            | 0.95 / 1398.0 / 89.38 %                            |
-| KSC              | 0.90 /  617.6 / 89.68 %                 | 0.90 /  617.6 / 91.88 %                            | 0.95 / 1303.7 / 92.55 %                            |
-| Indian Pines     | 0.90 /  649.2 / 71.23 %                 | 0.95 / 1370.6 / 74.54 %                            | 0.95 / 1370.6 / 75.12 %                            |
-| Pavia University | 0.95 /  890.7 / 79.15 %                 | 0.95 /  890.7 / 82.37 %                            | 0.95 /  890.7 / 82.86 %                            |
-| Pavia Centre     | 0.95 /  882.0 / 97.16 %                 | 0.95 /  882.0 / 97.71 %                            | 0.95 /  882.0 / 97.78 %                            |
-| Houston 2013     | 0.95 / 1010.3 / 80.77 %                 | 0.95 / 1010.3 / 81.71 %                            | 0.95 / 1010.3 / 82.31 %                            |
-| WHU-Hi-LongKou   | 0.90 / 1105.9 / 93.14 %                 | 0.95 / 2334.8 / 94.40 %                            | 0.95 / 2334.8 / 94.62 %                            |
-
----
-
-## 4. Per-Dataset Details
-
-### 4.1 Botswana (EO-1 Hyperion)
+### 3.1 Botswana (EO-1 Hyperion)
 
 - **Location:** Okavango Delta, Botswana.
 - **Spatial resolution:** 30 m.
@@ -110,7 +54,7 @@ Values reproduced from `paper_final/pictures/fig-tau-hsi.tex`. ACC reported on l
 - **Classes (14):** Water; Hippo grass; Floodplain grasses 1; Floodplain grasses 2; Reeds; Riparian; Firescar 2; Island interior; Acacia woodlands; Acacia shrublands; Acacia grasslands; Short mopane; Mixed mopane; Exposed soils.
 - **Files:** `Botswana.mat`, `Botswana_gt.mat` (variable keys: `Botswana`, `Botswana_gt`).
 
-### 4.2 Salinas (AVIRIS)
+### 3.2 Salinas (AVIRIS)
 
 - **Location:** Salinas Valley, California, USA.
 - **Spatial resolution:** 3.7 m.
@@ -130,7 +74,7 @@ Values reproduced from `paper_final/pictures/fig-tau-hsi.tex`. ACC reported on l
 | 7  | Celery                     |   3,579 | 15  | Vinyard_untrained          |   7,268 |
 | 8  | Grapes_untrained           |  11,271 | 16  | Vinyard_vertical_trellis   |   1,807 |
 
-### 4.3 Kennedy Space Center — KSC (AVIRIS)
+### 3.3 Kennedy Space Center — KSC (AVIRIS)
 
 - **Location:** Kennedy Space Center, Florida, USA (wetland mosaic).
 - **Spatial resolution:** 18 m.
@@ -139,7 +83,7 @@ Values reproduced from `paper_final/pictures/fig-tau-hsi.tex`. ACC reported on l
 - **Challenge:** few labeled samples (5,211 total).
 - **Files:** `KSC.mat`, `KSC_gt.mat`.
 
-### 4.4 Indian Pines (AVIRIS)
+### 3.4 Indian Pines (AVIRIS)
 
 - **Location:** North-western Indiana, USA (Purdue test site).
 - **Spatial resolution:** 20 m.
@@ -159,7 +103,7 @@ Values reproduced from `paper_final/pictures/fig-tau-hsi.tex`. ACC reported on l
 | 7  | Grass-pasture-mowed                  |      28 | 15 | Buildings-Grass-Trees-Drives           |     386 |
 | 8  | Hay-windrowed                        |     478 | 16 | Stone-Steel-Towers                     |      93 |
 
-### 4.5 Pavia University (ROSIS-03)
+### 3.5 Pavia University (ROSIS-03)
 
 - **Location:** Pavia, northern Italy (university campus).
 - **Spatial resolution:** 1.3 m.
@@ -167,7 +111,7 @@ Values reproduced from `paper_final/pictures/fig-tau-hsi.tex`. ACC reported on l
 - **Classes (9):** Asphalt; Meadows; Gravel; Trees; Painted metal sheets; Bare soil; Bitumen; Self-blocking bricks; Shadows.
 - **Files:** `PaviaU.mat`, `PaviaU_gt.mat`.
 
-### 4.6 Pavia Centre (ROSIS-03)
+### 3.6 Pavia Centre (ROSIS-03)
 
 - **Location:** Pavia, northern Italy (city centre).
 - **Spatial resolution:** 1.3 m.
@@ -176,7 +120,7 @@ Values reproduced from `paper_final/pictures/fig-tau-hsi.tex`. ACC reported on l
 - **Note:** the original cube is 1096×1096; a 1096×381 vertical stripe with no information is discarded by the upstream provider, hence the released ground truth is 1096×715.
 - **Files:** `Pavia.mat`, `Pavia_gt.mat`.
 
-### 4.7 Houston 2013 (ITRES CASI-1500)
+### 3.7 Houston 2013 (ITRES CASI-1500)
 
 - **Location:** University of Houston campus and adjacent urban area, Texas, USA.
 - **Provenance:** 2013 IEEE GRSS Data Fusion Contest [Debes et al., *IEEE J-STARS*, 2014].
@@ -186,7 +130,7 @@ Values reproduced from `paper_final/pictures/fig-tau-hsi.tex`. ACC reported on l
 - **Challenge:** heterogeneous illumination (shadow strip from a cloud), narrow man-made structures.
 - **Files:** `Houston.mat` (single packaged file containing both data and ground truth).
 
-### 4.8 WHU-Hi-LongKou (Headwall Nano-Hyperspec, UAV)
+### 3.8 WHU-Hi-LongKou (Headwall Nano-Hyperspec, UAV)
 
 - **Location:** Longkou Town, Hubei province, China (UAV-borne acquisition by RSIDEA group, Wuhan University).
 - **Provenance:** WHU-Hi benchmark suite [Zhong et al., *RSE*, 2020].
@@ -198,9 +142,9 @@ Values reproduced from `paper_final/pictures/fig-tau-hsi.tex`. ACC reported on l
 
 ---
 
-## 5. Download
+## 4. Download
 
-### 5.1 Six classic scenes — GIC mirror (UPV/EHU)
+### 4.1 Six classic scenes — GIC mirror (UPV/EHU)
 
 Primary mirror page: <https://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes>
 Alternative mirror: <https://ieee-dataport.org/documents/hyperspectral-remote-sensing-datasets-indian-pines-pavia-university-botswana-and-salinas>
@@ -218,7 +162,7 @@ Direct download URLs (each row is one cube file and one ground-truth file):
 
 These six scenes are not assigned individual DOIs by the GIC mirror. Indian Pines is additionally available on the Purdue University Research Repository with a formal DOI (see Section 6).
 
-### 5.2 Houston 2013 (2013 IEEE GRSS Data Fusion Contest)
+### 4.2 Houston 2013 (2013 IEEE GRSS Data Fusion Contest)
 
 Distributed by the IEEE GRSS through the Machine Learning Lab at the University of Houston (free, registration required for the full bundle):
 
@@ -228,31 +172,14 @@ Distributed by the IEEE GRSS through the Machine Learning Lab at the University 
 
 The dataset itself is *not* released with a stand-alone DOI — the canonical citation is the contest-outcome paper above.
 
-### 5.3 WHU-Hi-LongKou (RSIDEA, Wuhan University)
+### 4.3 WHU-Hi-LongKou (RSIDEA, Wuhan University)
 
 - Project page: <http://rsidea.whu.edu.cn/resource_WHUHi_sharing.htm>
 - Reference paper (DOI): <https://doi.org/10.1016/j.rse.2020.112012> (Y. Zhong et al., *Remote Sensing of Environment*, 250:112012, 2020).
 
 ---
 
-## 6. DOI summary
-
-Stand-alone dataset DOIs and reference-paper DOIs:
-
-| Dataset           | Dataset DOI                                                              | Reference-paper DOI                                                         |
-|-------------------|--------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| Botswana          | — (no individual DOI; GIC mirror)                                        | —                                                                           |
-| Salinas           | — (no individual DOI; GIC mirror)                                        | —                                                                           |
-| KSC               | — (no individual DOI; GIC mirror)                                        | —                                                                           |
-| Indian Pines      | <https://doi.org/10.4231/R7RX991C> (Purdue University Research Repository) | —                                                                         |
-| Pavia University  | — (no individual DOI; GIC mirror)                                        | —                                                                           |
-| Pavia Centre      | — (no individual DOI; GIC mirror)                                        | —                                                                           |
-| Houston 2013      | — (no stand-alone DOI; distributed by IEEE GRSS / Univ. of Houston)      | <https://doi.org/10.1109/JSTARS.2014.2305441>                               |
-| WHU-Hi-LongKou    | — (no stand-alone DOI; distributed by RSIDEA, Wuhan University)          | <https://doi.org/10.1016/j.rse.2020.112012>                                 |
-
----
-
-## 7. License and Citation
+## 5. License and Citation
 
 These datasets are distributed by their original providers (GIC/UPV-EHU; Purdue MultiSpec; ROSIS/DLR; IEEE GRSS / University of Houston; RSIDEA / Wuhan University). Please cite the original sources when using them:
 
