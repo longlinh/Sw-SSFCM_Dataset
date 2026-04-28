@@ -4,9 +4,6 @@ Hyperspectral image (HSI) datasets used in the paper **"Sw-SSFCM: Spatial-weight
 
 This page documents the exact datasets, semi-supervised splits, and evaluation protocol used to produce the HSI results reported in the paper (Table~IV — `tab:hsi_benchmark`, Table~III — `tab:hsi_datasets`, and the per-algorithm $\tau$-sweep figures `fig:tau_botswana` … `fig:tau_longkou`). It is intended as a single reference point for reviewers and for reproducibility.
 
-> **Dataset repository (this file):** <https://github.com/longlinh/Sw-SeFC_Dataset/blob/main/README.md>
-> **Companion code repository:** <https://github.com/longlinh/Sw-SeFC>
-
 ---
 
 ## 1. Datasets Overview (8 benchmarks)
@@ -45,7 +42,7 @@ HSI/
 └── README.md             (this file)
 ```
 
-Variable names inside each `.mat` follow the upstream convention (e.g. `salinas_corrected`/`salinas_gt`, `paviaU`/`paviaU_gt`, `WHU_Hi_LongKou`/`WHU_Hi_LongKou_gt`). The Houston 2013 release distributes the cube and DSM/ground-truth in a single packaged file; load it with `scipy.io.loadmat` and inspect keys.
+Variable names inside each `.mat` follow the upstream convention (e.g. `salinas_corrected` / `salinas_gt`, `paviaU` / `paviaU_gt`, `WHU_Hi_LongKou` / `WHU_Hi_LongKou_gt`). The Houston 2013 release packages the cube and the ground truth inside a single `.mat` file.
 
 ---
 
@@ -100,8 +97,6 @@ Values reproduced from `paper_final/pictures/fig-tau-hsi.tex`. ACC reported on l
 | Pavia Centre     | 0.95 /  882.0 / 97.16 %                 | 0.95 /  882.0 / 97.71 %                            | 0.95 /  882.0 / 97.78 %                            |
 | Houston 2013     | 0.95 / 1010.3 / 80.77 %                 | 0.95 / 1010.3 / 81.71 %                            | 0.95 / 1010.3 / 82.31 %                            |
 | WHU-Hi-LongKou   | 0.90 / 1105.9 / 93.14 %                 | 0.95 / 2334.8 / 94.40 %                            | 0.95 / 2334.8 / 94.62 %                            |
-
-> **Note on $r$:** S2-PFCM and GS-SPFCM exceed the available 16 GB GPU VRAM on Houston 2013 (peak ≈ 18.8 GB) and are reported as `---` in Table~IV.
 
 ---
 
@@ -189,7 +184,6 @@ Values reproduced from `paper_final/pictures/fig-tau-hsi.tex`. ACC reported on l
 - **Spectral range:** 0.38–1.05 μm; 144 bands.
 - **Classes (15):** Healthy grass; Stressed grass; Synthetic grass; Trees; Soil; Water; Residential; Commercial; Road; Highway; Railway; Parking Lot 1; Parking Lot 2; Tennis court; Running track.
 - **Challenge:** heterogeneous illumination (shadow strip from a cloud), narrow man-made structures.
-- **Memory note:** S2-PFCM and GS-SPFCM exceed 16 GB GPU VRAM on this scene (peak ≈ 18.8 GB) and are reported as `---` in the benchmark table.
 - **Files:** `Houston.mat` (single packaged file containing both data and ground truth).
 
 ### 4.8 WHU-Hi-LongKou (Headwall Nano-Hyperspec, UAV)
@@ -206,80 +200,55 @@ Values reproduced from `paper_final/pictures/fig-tau-hsi.tex`. ACC reported on l
 
 ## 5. Download
 
-### 5.1 GIC mirror (six classic scenes)
+### 5.1 Six classic scenes — GIC mirror (UPV/EHU)
 
-Primary mirror — GIC, University of the Basque Country (UPV/EHU):
+Primary mirror page: <https://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes>
+Alternative mirror: <https://ieee-dataport.org/documents/hyperspectral-remote-sensing-datasets-indian-pines-pavia-university-botswana-and-salinas>
 
-```bash
-BASE=http://www.ehu.eus/ccwintco/uploads
+Direct download URLs (each row is one cube file and one ground-truth file):
 
-# Botswana
-wget $BASE/7/72/Botswana.mat              && wget $BASE/5/58/Botswana_gt.mat
-# Salinas
-wget $BASE/a/a3/Salinas_corrected.mat     && wget $BASE/f/fa/Salinas_gt.mat
-# Kennedy Space Center
-wget $BASE/2/26/KSC.mat                   && wget $BASE/a/a6/KSC_gt.mat
-# Indian Pines
-wget $BASE/6/67/Indian_pines_corrected.mat && wget $BASE/c/c4/Indian_pines_gt.mat
-# Pavia University
-wget $BASE/e/ee/PaviaU.mat                && wget $BASE/5/50/PaviaU_gt.mat
-# Pavia Centre
-wget $BASE/e/e3/Pavia.mat                 && wget $BASE/5/53/Pavia_gt.mat
-```
+| Dataset           | Cube                                                                                                | Ground truth                                                                              |
+|-------------------|-----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| Botswana          | <http://www.ehu.eus/ccwintco/uploads/7/72/Botswana.mat>                                             | <http://www.ehu.eus/ccwintco/uploads/5/58/Botswana_gt.mat>                                |
+| Salinas           | <http://www.ehu.eus/ccwintco/uploads/a/a3/Salinas_corrected.mat>                                    | <http://www.ehu.eus/ccwintco/uploads/f/fa/Salinas_gt.mat>                                 |
+| KSC               | <http://www.ehu.eus/ccwintco/uploads/2/26/KSC.mat>                                                  | <http://www.ehu.eus/ccwintco/uploads/a/a6/KSC_gt.mat>                                     |
+| Indian Pines      | <http://www.ehu.eus/ccwintco/uploads/6/67/Indian_pines_corrected.mat>                               | <http://www.ehu.eus/ccwintco/uploads/c/c4/Indian_pines_gt.mat>                            |
+| Pavia University  | <http://www.ehu.eus/ccwintco/uploads/e/ee/PaviaU.mat>                                               | <http://www.ehu.eus/ccwintco/uploads/5/50/PaviaU_gt.mat>                                  |
+| Pavia Centre      | <http://www.ehu.eus/ccwintco/uploads/e/e3/Pavia.mat>                                                | <http://www.ehu.eus/ccwintco/uploads/5/53/Pavia_gt.mat>                                   |
 
-Mirror page: <https://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes>
-IEEE DataPort mirror: <https://ieee-dataport.org/documents/hyperspectral-remote-sensing-datasets-indian-pines-pavia-university-botswana-and-salinas>
+These six scenes are not assigned individual DOIs by the GIC mirror. Indian Pines is additionally available on the Purdue University Research Repository with a formal DOI (see Section 6).
 
 ### 5.2 Houston 2013 (2013 IEEE GRSS Data Fusion Contest)
 
-The original Houston 2013 release is distributed by the IEEE GRSS through the Hyperspectral Image Analysis Lab at the University of Houston (registration required):
+Distributed by the IEEE GRSS through the Machine Learning Lab at the University of Houston (free, registration required for the full bundle):
 
-- Hyperspectral Image Analysis group: <https://hyperspectral.ee.uh.edu/?page_id=459>
-- IEEE GRSS DASE archive: <https://machinelearning.ee.uh.edu/?page_id=459>
+- Distribution page: <https://machinelearning.ee.uh.edu/?page_id=459>
+- IEEE GRSS Data and Algorithm Standard Evaluation (DASE) entry: <https://dase.grss-ieee.org/index.php>
+- Reference paper (DOI): <https://doi.org/10.1109/JSTARS.2014.2305441> (C. Debes et al., *IEEE J. Sel. Topics Appl. Earth Observ. Remote Sens.*, 7(6):2405–2418, 2014).
 
-Reference: C. Debes et al., "Hyperspectral and LiDAR data fusion: Outcome of the 2013 GRSS Data Fusion Contest," *IEEE J. Sel. Topics Appl. Earth Observ. Remote Sens.*, vol. 7, no. 6, pp. 2405–2418, 2014. <https://doi.org/10.1109/JSTARS.2014.2305441>
+The dataset itself is *not* released with a stand-alone DOI — the canonical citation is the contest-outcome paper above.
 
 ### 5.3 WHU-Hi-LongKou (RSIDEA, Wuhan University)
 
-The WHU-Hi benchmark suite is hosted by the RSIDEA group:
-
 - Project page: <http://rsidea.whu.edu.cn/resource_WHUHi_sharing.htm>
-
-Reference: Y. Zhong et al., "WHU-Hi: UAV-borne hyperspectral with high spatial resolution (H²) benchmark datasets and classifier for precise crop identification based on deep convolutional neural network with CRF," *Remote Sensing of Environment*, vol. 250, p. 112012, 2020. <https://doi.org/10.1016/j.rse.2020.112012>
+- Reference paper (DOI): <https://doi.org/10.1016/j.rse.2020.112012> (Y. Zhong et al., *Remote Sensing of Environment*, 250:112012, 2020).
 
 ---
 
-## 6. Quick Load Example (Python)
+## 6. DOI summary
 
-The companion code uses the `ds.hsi.HSIDataset` loader from the `ds` clustering library (v1.1.0). A minimal `scipy` fallback:
+Stand-alone dataset DOIs and reference-paper DOIs:
 
-```python
-import scipy.io as sio
-import numpy as np
-
-cube = sio.loadmat("Salinas_corrected.mat")["salinas_corrected"]   # (H, W, d)
-gt   = sio.loadmat("Salinas_gt.mat")["salinas_gt"]                  # (H, W), 0=background
-
-H, W, d = cube.shape
-X       = cube.reshape(-1, d).astype(np.float32)
-y       = gt.reshape(-1)
-mask    = y > 0                       # keep only labeled pixels
-X_lab, y_lab = X[mask], y[mask] - 1   # 0-indexed
-```
-
-Recommended (matches the paper protocol):
-
-```python
-from ds.hsi import HSIDataset
-ds_obj = HSIDataset.load("salinas")    # also: "botswana", "ksc", "indian_pines",
-                                       #       "pavia_u", "pavia_c", "houston2013",
-                                       #       "whu_hi_longkou"
-```
-
-For the full Sw-SSFCM pipeline (per-algorithm $\tau$-sweep, spatial window $r \in \{1, 2\}$, 60 labels/class), see:
-
-- `src/exp3/tau_sweep_8algos_60lab.py` — per-algorithm $\tau$-sweep.
-- `src/exp3/benchmark_11algos_60lab_8hsi.py` — final 11-algorithm benchmark.
+| Dataset           | Dataset DOI                                                              | Reference-paper DOI                                                         |
+|-------------------|--------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| Botswana          | — (no individual DOI; GIC mirror)                                        | —                                                                           |
+| Salinas           | — (no individual DOI; GIC mirror)                                        | —                                                                           |
+| KSC               | — (no individual DOI; GIC mirror)                                        | —                                                                           |
+| Indian Pines      | <https://doi.org/10.4231/R7RX991C> (Purdue University Research Repository) | —                                                                         |
+| Pavia University  | — (no individual DOI; GIC mirror)                                        | —                                                                           |
+| Pavia Centre      | — (no individual DOI; GIC mirror)                                        | —                                                                           |
+| Houston 2013      | — (no stand-alone DOI; distributed by IEEE GRSS / Univ. of Houston)      | <https://doi.org/10.1109/JSTARS.2014.2305441>                               |
+| WHU-Hi-LongKou    | — (no stand-alone DOI; distributed by RSIDEA, Wuhan University)          | <https://doi.org/10.1016/j.rse.2020.112012>                                 |
 
 ---
 
@@ -288,16 +257,8 @@ For the full Sw-SSFCM pipeline (per-algorithm $\tau$-sweep, spatial window $r \i
 These datasets are distributed by their original providers (GIC/UPV-EHU; Purdue MultiSpec; ROSIS/DLR; IEEE GRSS / University of Houston; RSIDEA / Wuhan University). Please cite the original sources when using them:
 
 - **Indian Pines:** M. F. Baumgardner, L. L. Biehl, D. A. Landgrebe, "220 Band AVIRIS Hyperspectral Image Data Set: June 12, 1992 Indian Pine Test Site 3," Purdue University Research Repository, 2015. <https://doi.org/10.4231/R7RX991C>
-- **Houston 2013:** Debes et al., *IEEE J-STARS*, 2014 (above).
-- **WHU-Hi-LongKou:** Zhong et al., *RSE*, 2020 (above).
+- **Pavia University, Pavia Centre, Salinas, KSC, Botswana:** GIC, *Hyperspectral Remote Sensing Scenes*, University of the Basque Country (UPV/EHU). <https://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes>
+- **Houston 2013:** C. Debes et al., "Hyperspectral and LiDAR data fusion: Outcome of the 2013 GRSS Data Fusion Contest," *IEEE J. Sel. Topics Appl. Earth Observ. Remote Sens.*, 7(6):2405–2418, 2014. <https://doi.org/10.1109/JSTARS.2014.2305441>
+- **WHU-Hi-LongKou:** Y. Zhong et al., "WHU-Hi: UAV-borne hyperspectral with high spatial resolution (H²) benchmark datasets and classifier for precise crop identification based on deep convolutional neural network with CRF," *Remote Sensing of Environment*, 250:112012, 2020. <https://doi.org/10.1016/j.rse.2020.112012>
 
-If this packaging is useful for your own work, you may additionally cite the Sw-SSFCM paper:
-
-```bibtex
-@article{hoang2026swssfcm,
-  title   = {Sw-SSFCM: Spatial-weighted Softmax-Embedded Semi-Supervised Fuzzy C-Means},
-  author  = {Nguyen Xuan Hoang and Mai Dinh Sinh and Nguyen Long Giang},
-  journal = {ISI},
-  year    = {2026}
-}
-```
+If this packaging is useful for your own work, please additionally cite the Sw-SSFCM paper (Nguyen Xuan Hoang, Mai Dinh Sinh, Nguyen Long Giang, ISI 2026).
