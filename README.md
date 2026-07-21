@@ -187,3 +187,37 @@ These datasets are distributed by their original providers (GIC/UPV-EHU; Purdue 
 - **Pavia University, Pavia Centre, Salinas, KSC, Botswana:** GIC, *Hyperspectral Remote Sensing Scenes*, University of the Basque Country (UPV/EHU). <https://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes>
 - **Houston 2013:** C. Debes et al., "Hyperspectral and LiDAR data fusion: Outcome of the 2013 GRSS Data Fusion Contest," *IEEE J. Sel. Topics Appl. Earth Observ. Remote Sens.*, 7(6):2405–2418, 2014. <https://doi.org/10.1109/JSTARS.2014.2305441>
 - **WHU-Hi-LongKou:** Y. Zhong et al., "WHU-Hi: UAV-borne hyperspectral with high spatial resolution (H²) benchmark datasets and classifier for precise crop identification based on deep convolutional neural network with CRF," *Remote Sensing of Environment*, 250:112012, 2020. <https://doi.org/10.1016/j.rse.2020.112012>
+
+---
+
+## 6. Repository Contents (reproducibility kit)
+
+| File | Purpose |
+|------|---------|
+| `download-datasets.sh` | Fetches the six openly hosted benchmarks from the EHU mirror; prints registration instructions for Houston 2013 and WHU-Hi-LongKou |
+| `hsi_loader.py` | Self-contained loader (numpy/scipy/scikit-learn only): z-score normalization, label encoding (`-1` = unlabeled, `0..C-1` = class), and the stratified 60-labels-per-class split (seed 42, capped at class size) |
+| `splits/<dataset>_labels60_seed42.csv` | Canonical semi-supervised splits used in the paper — one row per labeled pixel (`pixel_index,row,col,class`). The loader reads these by default, so published results are reproducible bit-for-bit |
+| `tau_alpha_per_dataset.csv` | Per-algorithm tuned `(τ*, α*)` for SeFCM and Sw-SSFCM (r=1, r=2) on every scene, as reported in the paper |
+| `requirements.txt` | Python dependencies for the loader |
+| `LICENSE` | MIT — covers scripts/splits/docs only; datasets remain under their original providers' terms (section 5) |
+
+### Usage
+
+```bash
+pip install -r requirements.txt
+bash download-datasets.sh HSI          # + manual step for Houston / WHU-Hi (see output)
+python hsi_loader.py --root HSI        # sanity check: prints H, W, d, C, labeled counts
+```
+
+```python
+from hsi_loader import load_dataset
+
+# X: z-scored (N, d) matrix; y_true/y_lab: -1 = unlabeled, 0..C-1 = class
+X, y_true, y_lab, mask, H, W = load_dataset("indian_pines", "HSI")
+```
+
+`load_dataset(..., use_shipped_split=False)` regenerates the split from
+`numpy.random.default_rng(42)`; it is verified to reproduce the shipped CSVs
+exactly on all eight scenes.
+
+Algorithm reference implementation: <https://github.com/longlinh/Sw-SSFCM_Algs>.
