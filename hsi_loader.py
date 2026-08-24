@@ -1,4 +1,4 @@
-"""Self-contained loader for the eight HSI benchmarks used in the Sw-SSFCM paper.
+"""Self-contained loader for the six HSI benchmarks used in the Sw-SSFCM paper.
 
 Reproduces the exact experimental protocol:
   * z-score normalization (per-band StandardScaler on float64),
@@ -27,16 +27,12 @@ LABELS_PER_CLASS = 60
 DATASETS = {
     "botswana": ("Botswana/Botswana.mat", "Botswana",
                  "Botswana/Botswana_gt.mat", "Botswana_gt", 14),
-    "salinas": ("Salinas/Salinas_corrected.mat", "salinas_corrected",
-                "Salinas/Salinas_gt.mat", "salinas_gt", 16),
     "ksc": ("Kennedy_Space_Center/KSC.mat", "KSC",
             "Kennedy_Space_Center/KSC_gt.mat", "KSC_gt", 13),
     "indian_pines": ("Indian_Pines/Indian_pines_corrected.mat", "indian_pines_corrected",
                      "Indian_Pines/Indian_pines_gt.mat", "indian_pines_gt", 16),
     "pavia_university": ("Pavia_University/PaviaU.mat", "paviaU",
                          "Pavia_University/PaviaU_gt.mat", "paviaU_gt", 9),
-    "pavia_centre": ("Pavia_Centre/Pavia.mat", "pavia",
-                     "Pavia_Centre/Pavia_gt.mat", "pavia_gt", 9),
     # Houston 2013 ships cube + TR/TE ground-truth masks in one file.
     "houston2013": ("Houston/Houston.mat", "input", None, None, 15),
     "whuhi_longkou": ("WHU-Hi-LongKou/WHU_Hi_LongKou.mat", "WHU_Hi_LongKou",
