@@ -23,7 +23,7 @@ All files are provided in MATLAB `.mat` format (original distribution from GIC /
 
 ## 2. File Layout
 
-The `.mat` files are NOT tracked in git because of size; only this README is versioned. The expected layout (relative to repository root or to `/home/dll/nckh/dataset/HSI/`) is:
+The `.mat` files are NOT tracked in git because of size. The expected layout under the data root passed as `--root` (any directory; `HSI/` below is only an example name) is:
 
 ```
 HSI/
@@ -65,7 +65,7 @@ Variable names inside each `.mat` follow the upstream convention (e.g. `paviaU` 
 - **Spatial resolution:** 20 m.
 - **Spectral range:** 0.4–2.5 μm; 200 bands retained (water-absorption bands 104–108, 150–163, 220 removed).
 - **Classes:** 16 agricultural / forestry classes with strong spectral overlap.
-- **Small classes:** *Oats* (20 px), *Grass-pasture-mowed* (28 px) — label counts capped at class size (effective labels = 833).
+- **Small classes:** *Oats* (20 px), *Grass-pasture-mowed* (28 px), *Alfalfa* (46 px) — label counts capped at class size (874 effective labels at the largest budget).
 - **Files:** `Indian_pines_corrected.mat`, `Indian_pines_gt.mat`.
 
 | #  | Class                                | Samples | #  | Class                                  | Samples |
@@ -105,7 +105,7 @@ Variable names inside each `.mat` follow the upstream convention (e.g. `paviaU` 
 - **Spectral range:** 0.40–1.00 μm; 270 bands.
 - **Classes (9):** Corn; Cotton; Sesame; Broad-leaf soybean; Narrow-leaf soybean; Rice; Water; Roads & houses; Mixed weed.
 - **Strong spatial continuity** (typical of UAV crop imagery), highest spectral dimensionality of the six datasets.
-- **Files:** `WHU_Hi_LongKou.mat`, `WHU_Hi_LongKou_gt.mat` (the official release also bundles a `Training samples and test samples/` subfolder with `Train{25..300}.mat` / `Test{25..300}.mat` splits — not used by Sw-SSFCM, which uses its own stratified 60-labels-per-class split).
+- **Files:** `WHU_Hi_LongKou.mat`, `WHU_Hi_LongKou_gt.mat` (the official release also bundles a `Training samples and test samples/` subfolder with `Train{25..300}.mat` / `Test{25..300}.mat` splits — not used by Sw-SSFCM, which uses its own stratified label-budget splits).
 
 ---
 
@@ -159,9 +159,9 @@ These datasets are distributed by their original providers (GIC/UPV-EHU; Purdue 
 | File | Purpose |
 |------|---------|
 | `download-datasets.sh` | Fetches the four openly hosted benchmarks from the EHU mirror; prints registration instructions for Houston 2013 and WHU-Hi-LongKou |
-| `hsi_loader.py` | Self-contained loader (numpy/scipy/scikit-learn only): z-score normalization, label encoding (`-1` = unlabeled, `0..C-1` = class), and the stratified 60-labels-per-class split (seed 42, capped at class size) |
-| `splits/<dataset>_labels60_seed42.csv` | Canonical semi-supervised splits used in the paper — one row per labeled pixel (`pixel_index,row,col,class`). The loader reads these by default, so published results are reproducible bit-for-bit |
-| `theta_alpha_per_dataset.csv` | Global guidance share `θ = 0.99` (fixed, **not** tuned per scene) and the guidance weight `α` it induces through the θ-rule `α = θ/(1−θ)·S_d/S_g`. `α` depends only on the scene's measured spectral / guidance scales `S_d, S_g` (5-fold out-of-fold Softmax on the labeled set), so it is identical for Sr-SSFCM and both Sw-SSFCM radii and is recomputed at runtime; the median and min–max of `α` over the 5 label budgets × 10 seeds are listed for reference |
+| `hsi_loader.py` | Self-contained loader (numpy/scipy/scikit-learn only): z-score normalization, label encoding (`-1` = unlabeled, `0..C-1` = class), and the stratified n-labels-per-class split (capped at class size) for any budget/seed of the protocol |
+| `splits/<dataset>_labels<n>_seed<s>.csv` | Canonical semi-supervised splits used in the paper — all 300 combinations (6 scenes x 5 budgets `n` in {5,10,20,40,60} x 10 draws `s` in 42..51), one row per labeled pixel (`pixel_index,row,col,class`). The loader reads these by default, so published results are reproducible bit-for-bit |
+| `theta_alpha_per_dataset.csv` | Global guidance share `θ = 0.99` (fixed, **not** tuned per scene) and the guidance weight `α` it induces through the θ-rule `α = θ/(1−θ)·S_d/S_g`. `α` depends only on the scene's measured spectral / guidance scales `S_d, S_g` (5-fold out-of-fold Softmax on the labeled set), so it is identical for Sr-SSFCM and both Sw-SSFCM radii and is recomputed at runtime; the median and min–max of `α` over the 5 label budgets × 10 seeds are listed for reference (the manuscript quotes the *mean* at the 20-label budget, e.g. `S_d/S_g` = 10 on KSC and 91 on WHU-Hi-LongKou) |
 | `requirements.txt` | Python dependencies for the loader |
 | `LICENSE` | MIT — covers scripts/splits/docs only; datasets remain under their original providers' terms (section 5) |
 
@@ -169,19 +169,21 @@ These datasets are distributed by their original providers (GIC/UPV-EHU; Purdue 
 
 ```bash
 pip install -r requirements.txt
-bash download-datasets.sh HSI          # + manual step for Houston / WHU-Hi (see output)
-python hsi_loader.py --root HSI        # sanity check: prints H, W, d, C, labeled counts
+bash download-datasets.sh HSI                       # + manual step for Houston / WHU-Hi (see output)
+python hsi_loader.py --root HSI                     # sanity check at the default budget (60 labels/class, seed 42)
+python hsi_loader.py --root HSI --labels 10 --seed 47   # any budget/draw of the protocol
 ```
 
 ```python
 from hsi_loader import load_dataset
 
 # X: z-scored (N, d) matrix; y_true/y_lab: -1 = unlabeled, 0..C-1 = class
-X, y_true, y_lab, mask, H, W = load_dataset("indian_pines", "HSI")
+X, y_true, y_lab, mask, H, W = load_dataset("indian_pines", "HSI")            # 60 labels/class, seed 42
+X, y_true, y_lab, mask, H, W = load_dataset("indian_pines", "HSI", 20, 45)    # 20 labels/class, seed 45
 ```
 
 `load_dataset(..., use_shipped_split=False)` regenerates the split from
-`numpy.random.default_rng(42)`; it is verified to reproduce the shipped CSVs
-exactly on all six scenes.
+`numpy.random.default_rng(seed)`; it is verified to reproduce the shipped CSVs
+exactly on all six scenes and all 50 budget/seed combinations.
 
 Algorithm reference implementation: <https://github.com/longlinh/Sw-SSFCM_Algs>.

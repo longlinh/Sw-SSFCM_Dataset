@@ -3,13 +3,15 @@
 Reproduces the exact experimental protocol:
   * z-score normalization (per-band StandardScaler on float64),
   * label encoding: -1 = unlabeled, 0..C-1 = class index,
-  * stratified 60-labels-per-class split, seed 42, capped at class size.
+  * stratified n-labels-per-class split, capped at class size.
 
-The canonical splits used in the paper are ALSO shipped as CSV files in
-``splits/`` (one row per labeled pixel: pixel_index, row, col, class).
+The paper evaluates a label budget of n_l in {5, 10, 20, 40, 60} labels per
+class with ten draws (seeds 42-51). All 300 resulting splits (6 scenes x 5
+budgets x 10 seeds) are shipped as CSV files in ``splits/`` (one row per
+labeled pixel: pixel_index, row, col, class).
 ``load_dataset(..., use_shipped_split=True)`` (default) reads those files, so
 results are reproducible regardless of NumPy version. Set it to False to
-regenerate the split with ``numpy.random.default_rng(42)``.
+regenerate the split with ``numpy.random.default_rng(seed)``.
 
 Requires: numpy, scipy, scikit-learn.
 """
@@ -20,8 +22,10 @@ import numpy as np
 import scipy.io as sio
 from sklearn.preprocessing import StandardScaler
 
-SEED = 42
-LABELS_PER_CLASS = 60
+SEED = 42                     # first of the ten draws (42-51)
+LABELS_PER_CLASS = 60         # largest of the five budgets (5, 10, 20, 40, 60)
+SEEDS = tuple(range(42, 52))
+BUDGETS = (5, 10, 20, 40, 60)
 
 # dataset key -> (cube file, cube mat-key, gt file, gt mat-key, expected C)
 DATASETS = {
@@ -64,17 +68,19 @@ def build_split(y_true, mask, labels_per_class=LABELS_PER_CLASS, seed=SEED):
     return y_lab
 
 
-def load_shipped_split(ds_key, n_pixels, splits_dir=None):
-    """Read the canonical split CSV shipped with this repository."""
+def load_shipped_split(ds_key, n_pixels, labels_per_class=LABELS_PER_CLASS,
+                       seed=SEED, splits_dir=None):
+    """Read one canonical split CSV shipped with this repository."""
     splits_dir = Path(splits_dir or Path(__file__).parent / "splits")
-    path = splits_dir / f"{ds_key}_labels{LABELS_PER_CLASS}_seed{SEED}.csv"
+    path = splits_dir / f"{ds_key}_labels{labels_per_class}_seed{seed}.csv"
     rows = np.loadtxt(path, delimiter=",", skiprows=1, dtype=np.int64)
     y_lab = np.full(n_pixels, -1, dtype=np.int32)
     y_lab[rows[:, 0]] = rows[:, 3]
     return y_lab
 
 
-def load_dataset(ds_key, root, use_shipped_split=True):
+def load_dataset(ds_key, root, labels_per_class=LABELS_PER_CLASS, seed=SEED,
+                 use_shipped_split=True):
     """Load one benchmark.
 
     Returns ``X, y_true, y_lab, mask, H, W`` where X is the z-scored (N, d)
@@ -103,9 +109,9 @@ def load_dataset(ds_key, root, use_shipped_split=True):
     y_true[mask] = gt[mask] - 1
 
     if use_shipped_split:
-        y_lab = load_shipped_split(ds_key, H * W)
+        y_lab = load_shipped_split(ds_key, H * W, labels_per_class, seed)
     else:
-        y_lab = build_split(y_true, mask)
+        y_lab = build_split(y_true, mask, labels_per_class, seed)
     return X, y_true, y_lab, mask, H, W
 
 
@@ -115,9 +121,13 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Sanity-check one or all datasets.")
     ap.add_argument("--root", required=True, help="folder holding the .mat files")
     ap.add_argument("--dataset", default=None, choices=list(DATASETS))
+    ap.add_argument("--labels", type=int, default=LABELS_PER_CLASS,
+                    choices=list(BUDGETS), help="labels per class")
+    ap.add_argument("--seed", type=int, default=SEED, choices=list(SEEDS))
     args = ap.parse_args()
     for key in ([args.dataset] if args.dataset else DATASETS):
-        X, y_true, y_lab, mask, H, W = load_dataset(key, args.root)
+        X, y_true, y_lab, mask, H, W = load_dataset(
+            key, args.root, args.labels, args.seed)
         n_lab = int((y_lab >= 0).sum())
         n_cls = len(np.unique(y_true[mask]))
         print(f"{key:18s} H={H:5d} W={W:5d} d={X.shape[1]:3d} "
