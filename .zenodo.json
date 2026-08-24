@@ -1,0 +1,39 @@
+{
+  "title": "Sw-SSFCM_Dataset: benchmark scenes, label-budget splits and guidance-scale parameters for spatial-weighted semi-supervised fuzzy c-means on hyperspectral imagery",
+  "description": "<p>Reproducibility kit for the manuscript <em>A novel approach to spatial-weighted semi-supervised fuzzy c-means clustering for hyperspectral image analysis</em> (Computers &amp; Geosciences). Contains the retrieval scripts for the six public hyperspectral benchmarks (Botswana, Kennedy Space Center, Indian Pines, Pavia University, Houston 2013, WHU-Hi-LongKou), a self-contained Python loader reproducing the exact preprocessing and label encoding of the paper, the 300 canonical semi-supervised splits (6 scenes x 5 label budgets x 10 draws) and the guidance-scale parameters of the theta-rule. The hyperspectral cubes themselves remain with their original providers and are not redistributed here.</p>",
+  "upload_type": "dataset",
+  "access_right": "open",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Nguyen, Xuan Hoang",
+      "orcid": "0009-0007-1721-6931",
+      "affiliation": "Graduate University of Sciences and Technology, Vietnam Academy of Science and Technology, Hanoi, Vietnam"
+    },
+    {
+      "name": "Mai, Dinh Sinh",
+      "orcid": "0000-0001-7284-5713",
+      "affiliation": "Le Quy Don Technical University, Hanoi, Vietnam"
+    },
+    {
+      "name": "Nguyen, Long Giang",
+      "orcid": "0000-0001-6184-1469",
+      "affiliation": "Institute of Information Technology, Vietnam Academy of Science and Technology, Hanoi, Vietnam"
+    }
+  ],
+  "keywords": [
+    "hyperspectral image classification",
+    "semi-supervised clustering",
+    "fuzzy c-means",
+    "label budget",
+    "remote sensing",
+    "reproducibility"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/longlinh/Sw-SSFCM_Algs",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}
