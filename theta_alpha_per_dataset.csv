@@ -1,0 +1,7 @@
+dataset,theta_global,Sd_over_Sg_median,alpha_median,alpha_min,alpha_max
+botswana,0.99,64.45,6380.3,5661.9,9721.6
+ksc,0.99,10.29,1018.4,869.8,1471.0
+indian_pines,0.99,42.29,4186.9,3844.6,5507.0
+pavia_university,0.99,56.52,5595.2,4729.2,8105.4
+houston2013,0.99,30.09,2979.4,2261.0,6065.4
+whuhi_longkou,0.99,88.71,8782.2,7222.1,12555.6
