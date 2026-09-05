@@ -1,0 +1,50 @@
+cff-version: 1.2.0
+title: Sw-SSFCM_Dataset — benchmark scenes, label-budget splits and guidance-scale parameters
+message: >-
+  If you use these splits or the loader, please cite both this dataset record
+  and the accompanying paper listed under preferred-citation.
+type: dataset
+authors:
+  - family-names: Nguyen
+    given-names: Xuan Hoang
+    orcid: https://orcid.org/0009-0007-1721-6931
+  - family-names: Mai
+    given-names: Dinh Sinh
+    orcid: https://orcid.org/0000-0001-7284-5713
+  - family-names: Nguyen
+    given-names: Long Giang
+    orcid: https://orcid.org/0000-0001-6184-1469
+repository-code: https://github.com/longlinh/Sw-SSFCM_Dataset
+doi: 10.5281/zenodo.22085053
+abstract: >-
+  Reproducibility kit for the label-budget protocol of Sw-SSFCM on six public
+  hyperspectral benchmarks (Botswana, Kennedy Space Center, Indian Pines, Pavia
+  University, Houston 2013, WHU-Hi-LongKou): retrieval scripts, a self-contained
+  Python loader, the 300 canonical semi-supervised splits (6 scenes x 5 label
+  budgets x 10 draws) and the guidance-scale parameters of the theta-rule. The
+  hyperspectral cubes themselves remain with their original providers.
+keywords:
+  - hyperspectral image classification
+  - semi-supervised clustering
+  - fuzzy c-means
+  - label budget
+  - remote sensing
+  - reproducibility
+license: MIT
+version: 1.0.0
+date-released: '2026-08-24'
+preferred-citation:
+  type: article
+  title: >-
+    A novel approach to spatial-weighted semi-supervised fuzzy c-means
+    clustering for hyperspectral image analysis
+  authors:
+    - family-names: Nguyen
+      given-names: Xuan Hoang
+    - family-names: Mai
+      given-names: Dinh Sinh
+    - family-names: Nguyen
+      given-names: Long Giang
+  journal: Computers and Geosciences
+  year: 2026
+  notes: Under review. DOI to be assigned on acceptance.
