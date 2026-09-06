@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: Sw-SSFCM_Dataset — benchmark scenes, label-budget splits and guidance-scale parameters
+title: 'Sw-SSFCM_Dataset: benchmark scenes, label-budget splits and guidance-scale parameters'
 message: >-
   If you use these splits or the loader, please cite both this dataset record
   and the accompanying paper listed under preferred-citation.

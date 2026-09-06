@@ -32,7 +32,7 @@ cat <<'MSG'
 
 Two datasets require manual registration (place files as shown):
   * Houston 2013  -> HSI/Houston/Houston.mat  (keys: input, TR, TE)
-      https://machinelearning.ee.uh.edu/?page_id=459  (2013 IEEE GRSS DFC)
+      https://machinelearning.ee.uh.edu/2013-ieee-grss-data-fusion-contest/  (2013 IEEE GRSS DFC)
   * WHU-Hi-LongKou -> HSI/WHU-Hi-LongKou/WHU_Hi_LongKou.mat + WHU_Hi_LongKou_gt.mat
       http://rsidea.whu.edu.cn/resource_WHUHi_sharing.htm
 

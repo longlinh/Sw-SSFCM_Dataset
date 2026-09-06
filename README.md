@@ -1,6 +1,6 @@
 # HSI Benchmark Datasets for Sw-SSFCM
 
-Hyperspectral image (HSI) datasets used in the paper **"A novel approach to spatial-weighted semi-supervised fuzzy c-means clustering for hyperspectral image analysis"** (Xuan Hoang Nguyen, Dinh Sinh Mai, Long Giang Nguyen — submitted to *Computers & Geosciences*, 2026).
+Hyperspectral image (HSI) datasets used in the paper **"A novel approach to spatial-weighted semi-supervised fuzzy c-means clustering for hyperspectral image analysis"** (Xuan Hoang Nguyen, Dinh Sinh Mai, Long Giang Nguyen; submitted to *Computers & Geosciences*, 2026).
 
 ---
 
@@ -50,7 +50,7 @@ Variable names inside each `.mat` follow the upstream convention (e.g. `paviaU` 
 - **Classes (14):** Water; Hippo grass; Floodplain grasses 1; Floodplain grasses 2; Reeds; Riparian; Firescar 2; Island interior; Acacia woodlands; Acacia shrublands; Acacia grasslands; Short mopane; Mixed mopane; Exposed soils.
 - **Files:** `Botswana.mat`, `Botswana_gt.mat` (variable keys: `Botswana`, `Botswana_gt`).
 
-### 3.2 Kennedy Space Center — KSC (AVIRIS)
+### 3.2 Kennedy Space Center (KSC, AVIRIS)
 
 - **Location:** Kennedy Space Center, Florida, USA (wetland mosaic).
 - **Spatial resolution:** 18 m.
@@ -65,7 +65,7 @@ Variable names inside each `.mat` follow the upstream convention (e.g. `paviaU` 
 - **Spatial resolution:** 20 m.
 - **Spectral range:** 0.4–2.5 μm; 200 bands retained (water-absorption bands 104–108, 150–163, 220 removed).
 - **Classes:** 16 agricultural / forestry classes with strong spectral overlap.
-- **Small classes:** *Oats* (20 px), *Grass-pasture-mowed* (28 px), *Alfalfa* (46 px) — label counts capped at class size (874 effective labels at the largest budget).
+- **Small classes:** *Oats* (20 px), *Grass-pasture-mowed* (28 px), *Alfalfa* (46 px); label counts capped at class size (874 effective labels at the largest budget).
 - **Files:** `Indian_pines_corrected.mat`, `Indian_pines_gt.mat`.
 
 | #  | Class                                | Samples | #  | Class                                  | Samples |
@@ -105,13 +105,13 @@ Variable names inside each `.mat` follow the upstream convention (e.g. `paviaU` 
 - **Spectral range:** 0.40–1.00 μm; 270 bands.
 - **Classes (9):** Corn; Cotton; Sesame; Broad-leaf soybean; Narrow-leaf soybean; Rice; Water; Roads & houses; Mixed weed.
 - **Strong spatial continuity** (typical of UAV crop imagery), highest spectral dimensionality of the six datasets.
-- **Files:** `WHU_Hi_LongKou.mat`, `WHU_Hi_LongKou_gt.mat` (the official release also bundles a `Training samples and test samples/` subfolder with `Train{25..300}.mat` / `Test{25..300}.mat` splits — not used by Sw-SSFCM, which uses its own stratified label-budget splits).
+- **Files:** `WHU_Hi_LongKou.mat`, `WHU_Hi_LongKou_gt.mat` (the official release also bundles a `Training samples and test samples/` subfolder with `Train{25..300}.mat` / `Test{25..300}.mat` splits, not used by Sw-SSFCM, which uses its own stratified label-budget splits).
 
 ---
 
 ## 4. Download
 
-### 4.1 Four classic scenes — GIC mirror (UPV/EHU)
+### 4.1 Four classic scenes: GIC mirror (UPV/EHU)
 
 Primary mirror page: <https://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes>
 
@@ -130,11 +130,11 @@ These four scenes are not assigned individual DOIs by the GIC mirror. Indian Pin
 
 Distributed by the IEEE GRSS through the Machine Learning Lab at the University of Houston (free, registration required for the full bundle):
 
-- Distribution page: <https://machinelearning.ee.uh.edu/?page_id=459>
+- Distribution page: <https://machinelearning.ee.uh.edu/2013-ieee-grss-data-fusion-contest/>
 - IEEE GRSS Data and Algorithm Standard Evaluation (DASE) entry: <https://dase.grss-ieee.org/index.php>
 - Reference paper (DOI): <https://doi.org/10.1109/JSTARS.2014.2305441> (C. Debes et al., *IEEE J. Sel. Topics Appl. Earth Observ. Remote Sens.*, 7(6):2405–2418, 2014).
 
-The dataset itself is *not* released with a stand-alone DOI — the canonical citation is the contest-outcome paper above.
+The dataset itself is *not* released with a stand-alone DOI; the canonical citation is the contest-outcome paper above.
 
 ### 4.3 WHU-Hi-LongKou (RSIDEA, Wuhan University)
 
@@ -160,10 +160,10 @@ These datasets are distributed by their original providers (GIC/UPV-EHU; Purdue 
 |------|---------|
 | `download-datasets.sh` | Fetches the four openly hosted benchmarks from the EHU mirror; prints registration instructions for Houston 2013 and WHU-Hi-LongKou |
 | `hsi_loader.py` | Self-contained loader (numpy/scipy/scikit-learn only): z-score normalization, label encoding (`-1` = unlabeled, `0..C-1` = class), and the stratified n-labels-per-class split (capped at class size) for any budget/seed of the protocol |
-| `splits/<dataset>_labels<n>_seed<s>.csv` | Canonical semi-supervised splits used in the paper — all 300 combinations (6 scenes x 5 budgets `n` in {5,10,20,40,60} x 10 draws `s` in 42..51), one row per labeled pixel (`pixel_index,row,col,class`). The loader reads these by default, so published results are reproducible bit-for-bit |
+| `splits/<dataset>_labels<n>_seed<s>.csv` | Canonical semi-supervised splits used in the paper: all 300 combinations (6 scenes x 5 budgets `n` in {5,10,20,40,60} x 10 draws `s` in 42..51), one row per labeled pixel (`pixel_index,row,col,class`). The loader reads these by default, so published results are reproducible bit-for-bit |
 | `theta_alpha_per_dataset.csv` | Global guidance share `θ = 0.99` (fixed, **not** tuned per scene) and the guidance weight `α` it induces through the θ-rule `α = θ/(1−θ)·S_d/S_g`. `α` depends only on the scene's measured spectral / guidance scales `S_d, S_g` (5-fold out-of-fold Softmax on the labeled set), so it is identical for Sr-SSFCM and both Sw-SSFCM radii and is recomputed at runtime; the median and min–max of `α` over the 5 label budgets × 10 seeds are listed for reference (the manuscript quotes the *mean* at the 20-label budget, e.g. `S_d/S_g` = 10 on KSC and 91 on WHU-Hi-LongKou) |
 | `requirements.txt` | Python dependencies for the loader |
-| `LICENSE` | MIT — covers scripts/splits/docs only; datasets remain under their original providers' terms (section 5) |
+| `LICENSE` | MIT; covers scripts/splits/docs only; datasets remain under their original providers' terms (section 5) |
 
 ### Usage
 
