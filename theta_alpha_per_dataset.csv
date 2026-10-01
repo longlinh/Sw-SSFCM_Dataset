@@ -1,4 +1,4 @@
-dataset,theta_global,Sd_over_Sg_median,alpha_median,alpha_min,alpha_max
+dataset,theta_global,SD_over_Sg_median,alpha_median,alpha_min,alpha_max
 botswana,0.99,64.45,6380.3,5661.9,9721.6
 ksc,0.99,10.29,1018.4,869.8,1471.0
 indian_pines,0.99,42.29,4186.9,3844.6,5507.0

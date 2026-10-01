@@ -1,6 +1,6 @@
 # HSI Benchmark Datasets for Sw-SSFCM
 
-Hyperspectral image (HSI) datasets used in the paper **"A novel approach to spatial-weighted semi-supervised fuzzy c-means clustering for hyperspectral image analysis"** (Xuan Hoang Nguyen, Dinh Sinh Mai, Long Giang Nguyen; submitted to *Computers & Geosciences*, 2026).
+Hyperspectral image (HSI) datasets used in the paper **"A novel approach to spatial-weighted semi-supervised fuzzy c-means clustering for hyperspectral image analysis"** (Xuan Hoang Nguyen, Dinh Sinh Mai, Long Giang Nguyen; manuscript under review, 2026).
 
 ---
 
@@ -161,7 +161,7 @@ These datasets are distributed by their original providers (GIC/UPV-EHU; Purdue 
 | `download-datasets.sh` | Fetches the four openly hosted benchmarks from the EHU mirror; prints registration instructions for Houston 2013 and WHU-Hi-LongKou |
 | `hsi_loader.py` | Self-contained loader (numpy/scipy/scikit-learn only): z-score normalization, label encoding (`-1` = unlabeled, `0..C-1` = class), and the stratified n-labels-per-class split (capped at class size) for any budget/seed of the protocol |
 | `splits/<dataset>_labels<n>_seed<s>.csv` | Canonical semi-supervised splits used in the paper: all 300 combinations (6 scenes x 5 budgets `n` in {5,10,20,40,60} x 10 draws `s` in 42..51), one row per labeled pixel (`pixel_index,row,col,class`). The loader reads these by default, so published results are reproducible bit-for-bit |
-| `theta_alpha_per_dataset.csv` | Global guidance share `θ = 0.99` (fixed, **not** tuned per scene) and the guidance weight `α` it induces through the θ-rule `α = θ/(1−θ)·S_d/S_g`. `α` depends only on the scene's measured spectral / guidance scales `S_d, S_g` (5-fold out-of-fold Softmax on the labeled set), so it is identical for Sr-SSFCM and both Sw-SSFCM radii and is recomputed at runtime; the median and min–max of `α` over the 5 label budgets × 10 seeds are listed for reference (the manuscript quotes the *mean* at the 20-label budget, e.g. `S_d/S_g` = 10 on KSC and 91 on WHU-Hi-LongKou) |
+| `theta_alpha_per_dataset.csv` | Global guidance share `θ = 0.99` (fixed, **not** tuned per scene) and the guidance weight `α` it induces through the θ-rule `α = θ/(1−θ)·S_D/S_g`. `α` depends only on the scene's measured spectral / guidance scales `S_D, S_g` (5-fold out-of-fold Softmax on the labeled set), so it is identical for Sr-SSFCM and both Sw-SSFCM radii and is recomputed at runtime; the median and min–max of `α` over the 5 label budgets × 10 seeds are listed for reference (the manuscript quotes the *mean* at the 20-label budget, e.g. `S_D/S_g` = 10 on KSC and 91 on WHU-Hi-LongKou) |
 | `requirements.txt` | Python dependencies for the loader |
 | `LICENSE` | MIT; covers scripts/splits/docs only; datasets remain under their original providers' terms (section 5) |
 
