@@ -15,7 +15,7 @@ authors:
     given-names: Long Giang
     orcid: https://orcid.org/0000-0001-6184-1469
 repository-code: https://github.com/longlinh/Sw-SSFCM_Dataset
-doi: 10.5281/zenodo.22085053
+doi: 10.5281/zenodo.22085052
 abstract: >-
   Reproducibility kit for the label-budget protocol of Sw-SSFCM on six public
   hyperspectral benchmarks (Botswana, Kennedy Space Center, Indian Pines, Pavia
@@ -31,8 +31,8 @@ keywords:
   - remote sensing
   - reproducibility
 license: MIT
-version: 1.0.0
-date-released: '2026-08-24'
+version: 1.0.1
+date-released: '2026-10-01'
 preferred-citation:
   type: unpublished
   title: >-
