@@ -1,3 +1,11 @@
+> **Archived.** This repository is superseded by the code repository of the paper
+> <https://github.com/longlinh/SOP-SSFCM>, whose `reproduce/` folder downloads the six public
+> scenes from their providers (with SHA-256 checksums) and regenerates the label sets from their
+> seeds. The algorithm has been renamed **SOP-SSFCM** (spatial opinion-pooling semi-supervised
+> fuzzy c-means); the manuscript title is *Semi-supervised fuzzy c-means with spatial opinion
+> pooling of classifier probabilities for hyperspectral images with few labeled samples*.
+> The material below is kept unchanged for the archived Zenodo record.
+
 # HSI Benchmark Datasets for Sw-SSFCM
 
 Hyperspectral image (HSI) datasets used in the paper **"A novel approach to spatial-weighted semi-supervised fuzzy c-means clustering for hyperspectral image analysis"** (Xuan Hoang Nguyen, Dinh Sinh Mai, Long Giang Nguyen; manuscript under review, 2026).
