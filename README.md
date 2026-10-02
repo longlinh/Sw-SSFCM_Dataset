@@ -1,5 +1,5 @@
 > **Archived.** This repository is superseded by the code repository of the paper
-> <https://github.com/longlinh/SOP-SSFCM>, whose `reproduce/` folder downloads the six public
+> <https://github.com/longlinh/SOP-SSFCM_Algs>, whose `reproduce/` folder downloads the six public
 > scenes from their providers (with SHA-256 checksums) and regenerates the label sets from their
 > seeds. The algorithm has been renamed **SOP-SSFCM** (spatial opinion-pooling semi-supervised
 > fuzzy c-means); the manuscript title is *Semi-supervised fuzzy c-means with spatial opinion
